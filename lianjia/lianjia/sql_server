@@ -1,0 +1,45 @@
+CREATE SCHEMA `lianjia` ;
+DROP TABLE IF EXISTS `houseinfo`;
+CREATE TABLE `rawhouseinfo` (
+`house_id` bigint(15) NOT NULL AUTO_INCREMENT,
+`xiaoqu` varchar(16) DEFAULT NULL,
+`district` varchar(16) DEFAULT NULL,
+`total_price` double(12,2) DEFAULT NULL,
+`unit_price` double(8,2) DEFAULT NULL,
+`house_type` varchar(16) DEFAULT NULL,
+`floor`   varchar(16) DEFAULT NULL,
+`area`   double(10,2)     DEFAULT NULL,
+`house_struct`   varchar(16) DEFAULT NULL,
+`in_area`   varchar(16) DEFAULT NULL,
+`building_type`   varchar(16) DEFAULT NULL,
+`direction`   varchar(16) DEFAULT NULL,
+`building_structure`   varchar(16) DEFAULT NULL,
+`fixture`   varchar(16) DEFAULT NULL,
+`elevator_ratio`   varchar(16) DEFAULT NULL,
+`elevator_exist`   varchar(16) DEFAULT NULL,
+`yearlimit`   varchar(32) DEFAULT NULL,
+`list_time`   varchar(16) DEFAULT NULL,
+`trade_type`   varchar(16) DEFAULT NULL,
+`last_tradetime`   varchar(16) DEFAULT NULL,
+`house_use`   varchar(16) DEFAULT NULL,
+`house_time`   varchar(16) DEFAULT NULL,
+`owner_attribute`   varchar(16) DEFAULT NULL,
+`mortage`   varchar(32) DEFAULT NULL,
+`property_status`  varchar(16) DEFAULT NULL,
+`villa_type` varchar(16) DEFAULT NULL,
+`overall_floor` int(4) DEFAULT NULL,
+  PRIMARY KEY (`house_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=gbk;
+
+'INSERT INTO rawhouseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,
+`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,
+`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,
+`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`)
+VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s,
+%(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s,
+ %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s,
+  %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s)'
+sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s)'
+ON DUPLICATE KEY UPDATE
+sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s) ON DUPLICATE KEY UPDATE house_id=VALUES(house_id),xiaoqu = VALUES(xiaoqu),district=VALUES(district),total_price=VALUES(total_price),unit_price=VALUES(unit_price),house_type=VALUES(house_type),floor=VALUES(floor),area=VALUES(area),house_struct=VALUES(house_struct),in_area=sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s) ON DUPLICATE KEY UPDATE house_id=VALUES(house_id),xiaoqu = VALUES(xiaoqu),district=VALUES(district),total_price=VALUES(total_price),unit_price=VALUES(unit_price),house_type=VALUES(house_type),floor=VALUES(floor),area=VALUES(area),house_struct=VALUES(house_struct),in_area=sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s) ON DUPLICATE KEY UPDATE house_id=VALUES(house_id),xiaoqu = VALUES(xiaoqu),district=VALUES(district),total_price=VALUES(total_price),unit_price=VALUES(unit_price),house_type=VALUES(house_type),floor=VALUES(floor),area=VALUES(area),house_struct=VALUES(house_struct),in_area=VALUES(in_area),building_type=VALUES(building_type),fixture=VALUES(fixture),elevator_ratio=VALUES(elevator_ratio),elevator_exist=VALUES(elevator_exist),yeallimit=VALUES(yearlimit),list_time=VALUES(list_time),list_time=VALUES(list_time),trade_type=VALUES(trade_type),last_tradetime=VALUES(last_tradetime),house_use=VALUES(house_use),house_time=VALUES(house_time),owner_attribute=VALUES(owner_attribute),mortage=VALUES(mortage),property_status=VALUES(property_status),villa_type=VALUES(villa_type),overall_floor=VALUES(overall_floor)'
+ON DUPLICATE KEY UPDATE house_id=VALUES(house_id),xiaoqu = VALUES(xiaoqu),district=VALUES(district),total_price=VALUES(total_price),unit_price=VALUES(unit_price),house_type=VALUES(house_type),floor=VALUES(floor),area=VALUES(area),house_struct=VALUES(house_struct),in_area=sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s) ON DUPLICATE KEY UPDATE house_id=VALUES(house_id),xiaoqu = VALUES(xiaoqu),district=VALUES(district),total_price=VALUES(total_price),unit_price=VALUES(unit_price),house_type=VALUES(house_type),floor=VALUES(floor),area=VALUES(area),house_struct=VALUES(house_struct),in_area=VALUES(in_area),building_type=VALUES(building_type),fixture=VALUES(fixture),elevator_ratio=VALUES(elevator_ratio),elevator_exist=VALUES(elevator_exist),yeallimit=VALUES(yearlimit),list_time=VALUES(list_time),list_time=VALUES(list_time),trade_type=VALUES(trade_type),last_tradetime=VALUES(last_tradetime),house_use=VALUES(house_use),house_time=VALUES(house_time),owner_attribute=VALUES(owner_attribute),mortage=VALUES(mortage),property_status=VALUES(property_status),villa_type=VALUES(villa_type),overall_floor=VALUES(overall_floor)'
