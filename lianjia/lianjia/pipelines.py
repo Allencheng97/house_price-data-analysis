@@ -189,7 +189,9 @@ class LianjiaPipeline(object):
         delete_list = df[df['unit_price'] < head].index.tolist() + df[df['unit_price'] > tail].index.tolist()
         df.drop(delete_list)
         # use cap method  to reduce noise
-        df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data.csv', encoding='gb18030')
-        df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-utf8.csv', encoding='utf-8')
+        df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data.csv', encoding='gb18030',index=False)
+        df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-utf8.csv', encoding='utf-8',index=False)
+        df2=df.drop(['overall_floor','villa_type'],axis=1)
+        df2.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-cluster.csv',encoding='utf-8',index=False)
         f1.close()
         # write back
