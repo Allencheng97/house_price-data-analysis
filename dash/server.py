@@ -7,9 +7,13 @@ from dash.dependencies import Input, Output         # 回调
 from jupyter_plotly_dash import JupyterDash
 from sklearn.cluster import KMeans
 import numpy as np
-records = pd.read_csv('data-utf8.csv')
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import RandomizedSearchCV
+records = pd.read_csv('data-utf8-loc.csv')
 df = pd.DataFrame(records)
-df.drop(['id'], axis=1)
+# df.drop(['id'], axis=1)
 # 各区平均面积
 groups_area_jzmj = df['area'].groupby(df['district'])
 mean_area = groups_area_jzmj.mean()
@@ -73,11 +77,65 @@ for i in range(len(data1)):
     if y2[i]==2:
         cluster6.append(data2[i,:])
         cluster6_array=np.array(cluster6)
+#聚类3 方位
+# data3=records[['lat','lng','unit_price']]
+# data3=np.array(data3)
+# model3=KMeans(n_clusters=3,n_init=20)
+# model3.fit(data3)
+# y3=model3.predict(data3)
+# cluster7=[]
+# cluster8=[]
+# cluster9=[]
+# for i in range(len(data3)):
+#     if y3[i]==0:
+#         cluster7.append(data3[i,:])
+#         cluster7_array=np.array(cluster7)
+#     if y3[i]==1:
+#         cluster8.append(data3[i,:])
+#         cluster8_array=np.array(cluster8)
+#     if y3[i]==2:
+#         cluster9.append(data3[i,:])
+#         cluster9_array=np.array(cluster9)
 # 装修类型与单价
 fixture_unitprice = df['unit_price'].groupby(df['fixture'])
 # 电梯存在于单价
 ele_unitprice = df['unit_price'].groupby(df['elevator_exist'])
-
+#随机森林模型
+le = preprocessing.LabelEncoder()
+X1=le.fit(df['district'].unique()).transform(df['district']) #X1表示房屋所在区
+X2=le.fit(df['house_type'].unique()).transform(df['house_type']) #X2表示房屋的户型
+X3=df['area']  #X3表示房屋的面积
+X4=le.fit(df['fixture'].unique()).transform(df['fixture'])
+X5=le.fit(df['elevator_exist'].unique()).transform(df['elevator_exist']) #X5表示房屋有无电梯
+X6=le.fit(df['xiaoqu'].unique()).transform(df['xiaoqu']) 
+X7=le.fit(df['weizhi'].unique()).transform(df['weizhi'])
+X=np.mat([X1,X2,X3,X4,X5,X6,X7]).T
+Y=df['unit_price']
+X_train,X_test,Y_train,Y_test= train_test_split(X,Y,test_size=0.1, random_state=0)
+criterion=['mse','mae']
+n_estimators = [int(x) for x in np.linspace(start = 200, stop = 1200, num = 50)]
+max_features = ['auto', 'sqrt']
+max_depth = [int(x) for x in np.linspace(10, 100, num = 10)]
+max_depth.append(None)
+min_samples_split = [2, 5, 10]
+min_samples_leaf = [1, 2, 4]
+bootstrap = [True, False]
+random_grid = {'criterion':criterion,
+                'n_estimators': n_estimators,
+               'max_features': max_features,
+               'max_depth': max_depth,
+               'min_samples_split': min_samples_split,
+               'min_samples_leaf': min_samples_leaf,
+               'bootstrap': bootstrap}
+clf= RandomForestRegressor()
+clf_random = RandomizedSearchCV(estimator=clf, param_distributions=random_grid,
+                              n_iter = 10,  
+                              cv = 3, verbose=2, random_state=42, n_jobs=1)
+rf=RandomForestRegressor(criterion='mse',bootstrap=True,max_features='sqrt', max_depth=70,min_samples_split=10, n_estimators=506,min_samples_leaf=4)
+rf.fit(X_train, Y_train) 
+Y_train_pred=rf.predict(X_train)
+Y_test_pred=rf.predict(X_test)
+print()
 
 
 app = dash.Dash()
@@ -1178,6 +1236,7 @@ app.layout = html.Div(
                                 go.Scatter(x=cluster6_array[:,1], y=cluster6_array[:,0], mode='markers')
                         ],
                         layout=go.Layout(title='威海市住房单位面积价格与建筑面积聚类图', paper_bgcolor="#111111",
+                                        margin={'b': 0},
                                          plot_bgcolor='#111111',
                                          font=dict(
                                              family="Times New Roman", size=20, color='#7fdbff'),
@@ -1208,15 +1267,117 @@ app.layout = html.Div(
             ]
 
         ),
+    
         html.P(
                     id='cluster_test',
-                    style={'width': '100%', 'height': '30vh', 'fontSize': '25px',
-                           'float': 'left', 'align-items': 'center',  'background-color': '#111111', 'color': '#7FDBFF'},
+                    style={'width': '100%', 'height': '30vh', 'fontSize': '25px','padding-left': '0%', 'padding-right': '0%',
+                           'float': 'left', 'align-items': 'center',  'background-color': '#111111', 'color': '#7FDBFF','position':'relative','z-index':'99999','margin-top':'0px','margin-bottom':'0px'},
                     children=[
                         '根据聚类结果和我们的经验分析，我们大致可以将这14000多套房源分为以下3类:①trace1（面积小、价格相对较低、房源多）：这类房源分布范围广，在威海市各个区域均有分布，在靠近市中心如经区环翠区较少，在高区偏远地区和荣成市乳山市文登区分布较多。',
                         '②trace0（面积相对第一类大，经济适用型）这种房源围绕医疗商业中心位置集中分布，地理位置极好，交通方便，为大多数市区购买者首选房源，主要分布在经区高区环翠区。',
                         '③trace2（豪宅类型，平均面积都在200平以上，这种大户型的房源相对数量较少）这种房源一般为地段优秀的市中心或为部分为面积小单价高的学区房，包含少量别墅']
+                ),
+        # html.Div(
+        #     id='pic25',
+        #     style={'width': '40%', 'height': '200%', 'padding-left': '5%', 'padding-right': '5%',
+        #            'float': 'left', 'align-items': 'center', 'justify-content': 'center', 'background-color': '#111111'},
+        #     children=[
+        #         dcc.Graph(
+        #             id='kmeans_loc',
+        #             style={'height': '50vh'},
+        #             figure=dict(
+
+        #                 data=[
+        #                         go.Scatter(x=cluster7_array[:,1], y=cluster7_array[:,0], mode='markers'),
+        #                         go.Scatter(x=cluster8_array[:,1], y=cluster8_array[:,0], mode='markers'),
+        #                         go.Scatter(x=cluster9_array[:,1], y=cluster9_array[:,0], mode='markers')
+        #                 ],
+        #                 layout=go.Layout(title='威海市住房方位与单价聚类图', paper_bgcolor="#111111",
+        #                                  plot_bgcolor='#111111',
+        #                                  font=dict(
+        #                                      family="Times New Roman", size=20, color='#7fdbff'),
+        #                                  yaxis=dict(title='单价 单位：元',
+        #                                             titlefont=dict(
+        #                                                 color='rgb(148, 103, 189)', size=24),
+        #                                             tickfont=dict(
+        #                                                 color='#7FDBFF', size=24,),
+        #                                             tickwidth=4,
+        #                                             tickcolor='#7FDBFF',
+        #                                             showline=True,
+        #                                             linecolor='#7FDBFF',
+        #                                             linewidth=2,
+        #                                             showticklabels=True,
+        #                                             autorange=True,
+        #                                             type='linear',
+        #                                             ),
+        #                                  xaxis=dict(title='方位',
+        #                                             titlefont=dict(
+        #                                                 color='rgb(148, 103, 189)', size=24),
+        #                                             showline=True,
+        #                                             linecolor='#7FDBFF',
+        #                                             linewidth=2,
+        #                                             autorange=True
+        #                                             ))
+        #             )
+        #         ),
+        #     ]
+
+        # ),
+        html.Div(
+            id='pic26',
+            style={'width': '80%', 'height': '200%', 'padding-left': '10%', 'padding-right': '10%',
+                   'float': 'left', 'align-items': 'center', 'justify-content': 'center', 'background-color': '#111111','margin-top':'0px','margin-bottom':'0px'},
+            children=[
+                dcc.Graph(
+                    id='importance',
+                    style={'height': '70vh'},
+                    figure=dict(
+                        data=[go.Bar(
+                            x=['所在区','户型','面积','装修','有无电梯','小区名称','所在位置'],
+                            y=rf.feature_importances_.tolist(),
+                            marker=dict(colorscale='Viridis', color=colors,
+                                        showscale=True),
+                            textposition='auto',
+                            opacity=0.7
+                        )],
+
+                        layout=go.Layout(title='各变量重要性',
+                                         paper_bgcolor="#111111",
+                                         plot_bgcolor='#111111',
+                                         font=dict(
+                                             family="Times New Roman", size=20, color='#7fdbff'),
+                                         yaxis=dict(title='重要性指数',
+                                                    titlefont=dict(
+                                                        color='rgb(148, 103, 189)', size=24),
+                                                    tickfont=dict(
+                                                        color='#7FDBFF', size=24,),
+                                                    tickwidth=4,
+                                                    tickcolor='#7FDBFF',
+                                                    showline=True,
+                                                    linecolor='#7FDBFF',
+                                                    linewidth=2,
+                                                    showticklabels=True,
+                                                    autorange=True,
+                                                    type='linear',
+                                                    ),
+                                         xaxis=dict(title='变量',
+                                                    titlefont=dict(
+                                                        color='rgb(148, 103, 189)', size=24),
+                                                    showline=True,
+                                                    linecolor='#7FDBFF',
+                                                    linewidth=2,
+                                                    autorange=True
+                                                    )
+
+                                         )
+
+                    )
                 )
+                
+            ]
+
+        ),
+
 
 
     ]

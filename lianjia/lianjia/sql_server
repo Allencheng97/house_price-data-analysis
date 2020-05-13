@@ -28,6 +28,7 @@ CREATE TABLE `rawhouseinfo` (
 `property_status`  varchar(16) DEFAULT NULL,
 `villa_type` varchar(16) DEFAULT NULL,
 `overall_floor` int(4) DEFAULT NULL,
+`weizhi`    varchar(16) DEFAULT NULL,
   PRIMARY KEY (`house_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=gbk;
 

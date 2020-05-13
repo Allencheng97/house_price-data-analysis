@@ -17,8 +17,8 @@ class Sql:
                        fixture,elevator_ratio,elevator_exist,
                        yearlimit,list_time,trade_type,last_tradetime,
                        house_use,house_time,owner_attribute,mortage,
-                       property_status,villa_type,overall_floor):
-        sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s)'
+                       property_status,villa_type,overall_floor,weizhi):
+        sql ='INSERT INTO houseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`,`weizhi`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s),%(weizhi)s)'
         value = {
             'house_id':house_id,
             'xiaoqu':xiaoqu,
@@ -46,7 +46,8 @@ class Sql:
             'mortage':mortage,
             'property_status':property_status,
             'villa_type':villa_type,
-            'overall_floor':overall_floor
+            'overall_floor':overall_floor,
+            'weizhi':weizhi
         }
         cur.execute(sql, value)
         cnx.commit()
@@ -111,8 +112,8 @@ class Sql:
                        fixture, elevator_ratio, elevator_exist,
                        yearlimit, list_time, trade_type, last_tradetime,
                        house_use, house_time, owner_attribute, mortage,
-                       property_status, villa_type, overall_floor):
-        sql = 'INSERT INTO rawhouseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s) '
+                       property_status, villa_type, overall_floor,weizhi):
+        sql = 'INSERT INTO rawhouseinfo (`house_id`, `xiaoqu`, `district`, `total_price`,`unit_price`,`house_type`,`floor`,`area`,`house_struct`,`in_area`,`building_type`,`direction`,`building_structure`,`fixture`,`elevator_ratio`,`elevator_exist`,`yearlimit`,`list_time`,`trade_type`,`last_tradetime`,`house_use`,`house_time`,`owner_attribute`,`mortage`,`property_status`,`villa_type`,`overall_floor`,`weizhi`) VALUES(%(house_id)s, %(xiaoqu)s, %(district)s, %(total_price)s, %(unit_price)s, %(house_type)s, %(floor)s, %(area)s, %(house_struct)s, %(in_area)s, %(building_type)s, %(direction)s, %(building_structure)s, %(fixture)s, %(elevator_ratio)s,%(elevator_exist)s,%(yearlimit)s, %(list_time)s, %(trade_type)s, %(last_tradetime)s, %(house_use)s, %(house_time)s, %(owner_attribute)s, %(mortage)s, %(property_status)s, %(villa_type)s, %(overall_floor)s,%(weizhi)s) '
         value = {
             'house_id': house_id,
             'xiaoqu': xiaoqu,
@@ -140,7 +141,8 @@ class Sql:
             'mortage': mortage,
             'property_status': property_status,
             'villa_type': villa_type,
-            'overall_floor': overall_floor
+            'overall_floor': overall_floor,
+            'weizhi':weizhi
         }
         cur.execute(sql, value)
         cnx.commit()

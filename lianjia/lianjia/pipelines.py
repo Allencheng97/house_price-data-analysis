@@ -13,6 +13,7 @@ from scrapy.exceptions import DropItem
 from lianjia.items import LianjiaItem
 from lianjia.sql import Sql
 from lianjia import helper
+from lianjia import baidumap
 
 
 class LianjiaPipeline(object):
@@ -123,12 +124,13 @@ class LianjiaPipeline(object):
                 property_status = item['property_status']
                 villia_type = item['villa_type']
                 overall_floor = item['overall_floor']
+                weizhi = item['weizhi']
                 Sql.insert_raw_data(house_id, xiaoqu, district, total_price, unit_price, house_type, floor, area,
                                     house_struct, in_area,
                                     building_type, direction, building_structure, fixture, elevator_ratio,
                                     elevator_exist, yearlimit,
                                     list_time, trade_type, last_tradetime, house_use, house_time, owner_attribute,
-                                    mortage, property_status, villia_type, overall_floor)
+                                    mortage, property_status, villia_type, overall_floor,weizhi)
 
             else:
                 xiaoqu = item['xiaoqu']
@@ -157,12 +159,13 @@ class LianjiaPipeline(object):
                 property_status = item['property_status']
                 villia_type = item['villa_type']
                 overall_floor = item['overall_floor']
+                weizhi=item['weizhi']
                 Sql.insert_raw_data(house_id, xiaoqu, district, total_price, unit_price, house_type, floor, area,
                                     house_struct, in_area,
                                     building_type, direction, building_structure, fixture, elevator_ratio,
                                     elevator_exist, yearlimit,
                                     list_time, trade_type, last_tradetime, house_use, house_time, owner_attribute,
-                                    mortage, property_status, villia_type, overall_floor)
+                                    mortage, property_status, villia_type, overall_floor,weizhi)
 
         return item
     def close_spider(self, spider):
@@ -176,21 +179,35 @@ class LianjiaPipeline(object):
         records = [json.loads(line) for line in f1.readlines()]
         # read file
         df = pd.DataFrame(records)
-        df.drop_duplicates()
-        print(df.describe())
-        print(df.apply(lambda col: sum(col.isnull()) / col.size))
-        delete_list = df[(df.building_type.isnull())].index.tolist()
-        delete_list += df[(df.building_structure.isnull())].index.tolist()
-        delete_set = set(delete_list)
-        delete_list = list(delete_set)
-        df = df.drop(delete_list)
-        # delete all rows which building_structure or building_type is null
-        head, tail = helper.cap(df['unit_price'])
-        delete_list = df[df['unit_price'] < head].index.tolist() + df[df['unit_price'] > tail].index.tolist()
-        df.drop(delete_list)
+
+        # df.drop_duplicates()
+        # print(df.describe())
+        # print(df.apply(lambda col: sum(col.isnull()) / col.size))
+        # delete_list = df[(df.building_type.isnull())].index.tolist()
+        # delete_list += df[(df.building_structure.isnull())].index.tolist()
+        # delete_set = set(delete_list)
+        # delete_list = list(delete_set)
+        # df = df.drop(delete_list)
+        # # delete all rows which building_structure or building_type is null
+        # head, tail = helper.cap(df['unit_price'])
+        # delete_list = df[df['unit_price'] < head].index.tolist() + df[df['unit_price'] > tail].index.tolist()
+        # df.drop(delete_list)
         # use cap method  to reduce noise
         df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data.csv', encoding='gb18030',index=False)
         df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-utf8.csv', encoding='utf-8',index=False)
+        df['address'] = '山东省威海市' + df['district'] + df['weizhi']
+        l = df['address'].unique()
+        loc = dict()
+        for i in l:
+            loc[i] = baidumap.getlng(i)
+
+        def addtoloc(add):
+            if add in loc:
+                return loc[add]
+
+        df['lat'] = df.apply(lambda row: addtoloc(row['address'])[0], axis=1)
+        df['lng'] = df.apply(lambda row: addtoloc(row['address'])[1], axis=1)
+        df.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-loc.csv',encoding='utf-8',index=False)
         df2=df.drop(['overall_floor','villa_type'],axis=1)
         df2.to_csv(r'C:\\Users\\Allen\\Desktop\\test\\data-cluster.csv',encoding='utf-8',index=False)
         f1.close()

@@ -38,6 +38,9 @@ class LianjiaItem(scrapy.Item):
     property_status=scrapy.Field()#房本信息
     overall_floor=scrapy.Field()#总楼层
     villa_type=scrapy.Field()
+    weizhi=scrapy.Field()
+
+
 
 
 

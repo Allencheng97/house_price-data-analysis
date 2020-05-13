@@ -1,9 +1,10 @@
 Server: Lianjia
-Date: Fri, 20 Mar 2020 09:02:01 GMT
-Content-Type: text/html; charset=UTF-8
+Date: Tue, 12 May 2020 23:17:10 GMT
+Content-Type: text/html
+Last-Modified: Mon, 16 Dec 2019 11:09:51 GMT
 Vary: Accept-Encoding
-Set-Cookie: select_city=371000; expires=Sat, 21-Mar-2020 09:02:00 GMT; Max-Age=86400; path=/; domain=.lianjia.com
-Set-Cookie: lianjia_ssid=fb998fdb-efc4-40ec-b581-0b3a9b2a2be7; expires=Fri, 20-Mar-20 09:32:00 GMT; Max-Age=1800; domain=.lianjia.com; path=/
-Set-Cookie: lianjia_uuid=9522308f-ab59-4cc6-abe8-60ef3a6a2f59; expires=Mon, 18-Mar-30 09:02:00 GMT; Max-Age=315360000; domain=.lianjia.com; path=/
-Via: web06-online.zeus.ljnode.com
+Etag: W/"5df765ff-c16"
+Expires: Tue, 12 May 2020 23:17:40 GMT
+Cache-Control: max-age=30
+Set-Cookie: User-Realip=36.63.23.37;Max-Age=3600; Path=/;
 Content-Encoding: gzip

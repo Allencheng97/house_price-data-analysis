@@ -48,9 +48,7 @@ class Simplespider(scrapy.Spider):
         item = LianjiaItem()
         pattern = re.compile('(?<=>)\w+(?=<)')
         content = BeautifulSoup(response.text, 'lxml')
-        house_use = response.xpath(
-            "//div[@class='introContent']/div[@class='transaction']/div[@class='content']/ul/li[4]/span[2]/text()").extract()[
-            0]
+        house_use = response.xpath('//*[@id="introduction"]/div/div/div[2]/div[2]/ul/li[4]/span[2]/text()').extract()[0]
         if house_use == '普通住宅':
             item['house_id'] = str(content.find_all('span', class_='info')[2].get_text()[:-2])
             item['xiaoqu'] = content.find_all('a', class_='info')[0].get_text()
@@ -104,6 +102,7 @@ class Simplespider(scrapy.Spider):
                 "//div[@class='introContent']/div[@class='transaction']/div[@class='content']/ul/li[8]/span[2]/text()").extract()[
                 0]
             item['villa_type']='暂无数据'
+            item['weizhi']=response.xpath('/html/body/div[5]/div[2]/div[4]/div[2]/span[2]/a[2]/text()').extract()[0]
         elif house_use =='别墅':
             item['house_id'] = str(content.find_all('span', class_='info')[2].get_text()[:-2])
             item['xiaoqu'] = content.find_all('a', class_='info')[0].get_text()
@@ -153,6 +152,7 @@ class Simplespider(scrapy.Spider):
             item['house_struct']='暂无数据'
             item['elevator_exist']='无'
             item['elevator_ratio']='无'
+            item['weizhi'] = response.xpath('/html/body/div[5]/div[2]/div[4]/div[2]/span[2]/a[2]/text()').extract()[0]
         elif house_use == '商住两用':
             item['house_id'] = str(content.find_all('span', class_='info')[2].get_text()[:-2])
             item['xiaoqu'] = content.find_all('a', class_='info')[0].get_text()
@@ -206,6 +206,7 @@ class Simplespider(scrapy.Spider):
                 "//div[@class='introContent']/div[@class='transaction']/div[@class='content']/ul/li[8]/span[2]/text()").extract()[
                 0]
             item['villa_type'] = '暂无数据'
+            item['weizhi'] = response.xpath('/html/body/div[5]/div[2]/div[4]/div[2]/span[2]/a[2]/text()').extract()[0]
         else:
             pass
         yield item
